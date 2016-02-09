@@ -58,7 +58,7 @@
 
 <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
   (<a href="http://l1sp.org/cl/defmethod">defmethod</a> foo :append ((num integer) other)
-    &quot;dicks&quot;))
+    &quot;stuff&quot;))
 </code></pre>
 
 <p>You can also extend this system for your own documentation translators. If you need more complex behaviour than the default of <code>(<a href="http://l1sp.org/cl/documentation">documentation</a> specifier type)</code>, see <code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TRANSLATOR">define-documentation-translator</a></code>. If you are defining a new documentation type, you should also add a <code><a href="#DOCUMENTATION-UTILS:DOCUMENTATION-TEST">documentation-test</a></code> to ensure that <code><a href="#DOCUMENTATION-UTILS:CHECK">check</a></code> can verify that you actually did set a documentation.</p>

@@ -25,6 +25,6 @@ Aliases exist for most of the `def*` forms. Some forms can take multiple argumen
 
     (docs:define-docs
       (defmethod foo :append ((num integer) other)
-        "dicks"))
+        "stuff"))
 
 You can also extend this system for your own documentation translators. If you need more complex behaviour than the default of `(documentation specifier type)`, see `define-documentation-translator`. If you are defining a new documentation type, you should also add a `documentation-test` to ensure that `check` can verify that you actually did set a documentation.
