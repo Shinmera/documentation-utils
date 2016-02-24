@@ -57,13 +57,13 @@
             do (when (and (funcall test symb) (not (handler-bind ((warning #'muffle-warning)) (documentation symb type))))
                  (warn "No documentation for ~(~a~) ~a." type symb))))))
 
-(defmacro define-docs (&body forms)
+(defmacro define-docs (&body expressions)
   `(progn
-     ,@(loop for form in forms
-             for length = (length form)
-             for type = (if (< 2 length) (first form) 'function)
-             for var = (if (< 2 length) (rest (butlast form)) (butlast form))
-             for doc = (car (last form))
+     ,@(loop for expr in expressions
+             for length = (length expr)
+             for type = (if (< 2 length) (first expr) 'function)
+             for var = (if (< 2 length) (rest (butlast expr)) (butlast expr))
+             for doc = (car (last expr))
              collect `(setf ,(funcall (documentation-translator type) var) ,doc))))
 
 (trivial-indent:define-indentation define-docs (&rest (&whole 2 0 &body)))
@@ -78,8 +78,8 @@
 (define-documentation-test type (symb)
   (find-class symb NIL))
 
-(define-documentation-translator method (form)
-  (destructuring-bind (func &rest quals-specs) form
+(define-documentation-translator method (expr)
+  (destructuring-bind (func &rest quals-specs) expr
     (let* ((qualifiers (butlast quals-specs))
            (specializers (car (last quals-specs)))
            (clean-specs (loop for arg in specializers

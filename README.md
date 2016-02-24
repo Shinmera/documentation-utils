@@ -2,12 +2,12 @@
 This is a small library to help you with managing the docstrings for your library.
 
 ## How To
-The central element is the `define-docs` macro. It takes a body of forms to define the documentation. In the simplest form, this looks like so:
+The central element is the `define-docs` macro. It takes a body of expressions to define the documentation. In the simplest form, this looks like so:
 
     (docs:define-docs
       (my-function "Some documentation"))
 
-If you need a different type of documentation, or want to be explicit, prepend its type to the form.
+If you need a different type of documentation, or want to be explicit, prepend its type to the expression.
 
     (docs:define-docs
       (function my-function "Some documentation")
@@ -21,7 +21,7 @@ In order to make things look more homely, aliases exist that can be used instead
       (defvar *my-variable*
         "Something else"))
 
-Aliases exist for most of the `def*` forms. Some forms can take multiple arguments for the specifier, but the last in the form is always the docstring:
+Aliases exist for most of the `def*` expressions. Some expressions can take multiple arguments for the specifier, but the last in the expression is always the docstring:
 
     (docs:define-docs
       (defmethod foo :append ((num integer) other)

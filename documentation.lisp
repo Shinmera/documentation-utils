@@ -31,7 +31,7 @@ See *DOCUMENTATION-TESTS*")
   (defvar *documentation-translators*
     "Holds an alist of documentation types to translator functions.
 
-The function should take one argument, the specifier form, and
+The function should take one argument, the specifier expression, and
 return a documentation form suitable to access the documentation
 for the given type.")
 
@@ -68,7 +68,7 @@ See *DOCUMENTATION-TESTS*")
   (defmacro define-docs
     "Allows you to comfortably and easily set the documentation for your library.
 
-Each form in the body can either take a two or many argument structure.
+Each expression in the body can either take a two or many argument structure.
 In the two argument structure, the type is implicitly assumed to be 
 FUNCTION. The first argument is then the specifier, and the second the
 docstring. In the many argument structure the first argument is the

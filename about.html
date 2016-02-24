@@ -32,13 +32,13 @@
 
 <h2>How To</h2>
 
-<p>The central element is the <code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">define-docs</a></code> macro. It takes a body of forms to define the documentation. In the simplest form, this looks like so:</p>
+<p>The central element is the <code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">define-docs</a></code> macro. It takes a body of expressions to define the documentation. In the simplest form, this looks like so:</p>
 
 <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
   (my-function &quot;Some documentation&quot;))
 </code></pre>
 
-<p>If you need a different type of documentation, or want to be explicit, prepend its type to the form.</p>
+<p>If you need a different type of documentation, or want to be explicit, prepend its type to the expression.</p>
 
 <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
   (<a href="http://l1sp.org/cl/function">function</a> my-function &quot;Some documentation&quot;)
@@ -54,7 +54,7 @@
     &quot;Something else&quot;))
 </code></pre>
 
-<p>Aliases exist for most of the <code>def*</code> forms. Some forms can take multiple arguments for the specifier, but the last in the form is always the docstring:</p>
+<p>Aliases exist for most of the <code>def*</code> expressions. Some expressions can take multiple arguments for the specifier, but the last in the expression is always the docstring:</p>
 
 <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
   (<a href="http://l1sp.org/cl/defmethod">defmethod</a> foo :append ((num integer) other)
@@ -113,7 +113,7 @@ return non-NIL if the symbol is bound for the given type.</pre>
                     </header>
                     <pre class="docstring">Holds an alist of documentation types to translator functions.
 
-The function should take one argument, the specifier form, and
+The function should take one argument, the specifier expression, and
 return a documentation form suitable to access the documentation
 for the given type.</pre>
                   </article>
@@ -203,12 +203,12 @@ See *DOCUMENTATION-TRANSLATORS*</pre>
                       <code>
                         <h4><a href="#DOCUMENTATION-UTILS:DEFINE-DOCS" class="name">DEFINE-DOCS</a></h4>
                         <span class="qualifiers"></span>
-                        <span class="arguments">(&amp;BODY FORMS)</span>
+                        <span class="arguments">(&amp;BODY EXPRESSIONS)</span>
                       </code>
                     </header>
                     <pre class="docstring">Allows you to comfortably and easily set the documentation for your library.
 
-Each form in the body can either take a two or many argument structure.
+Each expression in the body can either take a two or many argument structure.
 In the two argument structure, the type is implicitly assumed to be 
 FUNCTION. The first argument is then the specifier, and the second the
 docstring. In the many argument structure the first argument is the
