@@ -48,14 +48,20 @@
   `(setf (documentation-translator ',alias)
          (lambda (form) (funcall (documentation-translator ',type) form))))
 
+(defun list-symbols (package &key (internal T))
+  (let ((symbs ()))
+    (do-symbols (symb package (sort symbs #'string<))
+      (when (and (eql (symbol-package symb) package)
+                 (or internal (eql :external (nth-value 1 (find-symbol (string symb) package)))))
+        (push symb symbs)))))
+
 (defun check (&key (package *package*) (internal T))
-  (do-symbols (symb package)
-    (when (and (eql (symbol-package symb) package)
-               (or internal (eql :external (nth-value 1 (find-symbol (string symb) package)))))
-      (loop for (type . test) in *documentation-tests*
-            for reader = (documentation-translator type)
-            do (when (and (funcall test symb) (not (handler-bind ((warning #'muffle-warning)) (documentation symb type))))
-                 (warn "No documentation for ~(~a~) ~a." type symb))))))
+  (loop for (type . test) in (sort (copy-list *documentation-tests*)
+                                   #'string< :key #'car)
+        for reader = (documentation-translator type)
+        do (dolist (symb (list-symbols package :internal internal))
+             (when (and (funcall test symb) (not (handler-bind ((warning #'muffle-warning)) (documentation symb type))))
+               (warn "No documentation for ~(~a~) ~a." type symb)))))
 
 (defmacro define-docs (&body expressions)
   `(progn
