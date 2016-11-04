@@ -32,7 +32,7 @@
         `(documentation ',(if (listp form) (first form) form) ',type))))
 
 (defun (setf documentation-translator) (translator type)
-  (if (assoc type *documentation-tests*)
+  (if (assoc type *documentation-translators*)
       (setf (cdr (assoc type *documentation-translators*)) translator)
       (push (cons type translator) *documentation-translators*)))
 
