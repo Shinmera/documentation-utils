@@ -6,38 +6,41 @@
           font-size: 14pt;
           padding: 5px;
       }
-
       body>header{
           display:flex;
           align-items: center;
           justify-content: center;
           flex-direction: column;
           max-width: 100%;
+          text-align: center;
       }
-
+      body>header img{
+          max-width: 50%;
+      }
       img{
           max-width: 100%;
           max-height: 100%;
       }
-
       code{
           font-family: Consolas, Inconsolata, monospace;
       }
-
       a{
           text-decoration: none;
           color: #0055AA;
       }
-
+      a img{
+          border: none;
+      }
       #documentation{
           text-align: justify;
       }
-
       #documentation pre{
           margin-left: 20px;
           overflow: auto;
       }
-
+      #documentation img{
+          margin: 5px;
+      }
       #symbol-index>ul{
           list-style: none;
           padding: 0;
@@ -68,60 +71,19 @@
           white-space: pre-wrap;
           font-size: 12pt;
       }
-
       @media (max-width: 800px){
           body{font-size: 12pt;}
-      } </style> </head> <body> <header> <h1>documentation-utils</h1> <span class="version">1.0.0</span> <p class="description">A few simple tools to help you with documenting your library.</p> </header> <main> <article id="documentation">  <div><h2>About documentation-utils</h2> <p>This is a small library to help you with managing the docstrings for your library.</p> <h2>How To</h2> <p>The central element is the <code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">define-docs</a></code> macro. It takes a body of expressions to define the documentation. In the simplest form, this looks like so:</p> <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
+      } </style> </head> <body> <header> <h1>documentation-utils</h1> <span class="version">1.0.0</span> <p class="description">A few simple tools to help you with documenting your library.</p> </header> <main> <article id="documentation">  <div><h2>About documentation-utils</h2> <p>This is a small library to help you with managing the docstrings for your library.</p> <h2>How To</h2> <p>The central element is the <code>define-docs</code> macro. It takes a body of expressions to define the documentation. In the simplest form, this looks like so:</p> <pre><code>(docs:define-docs
   (my-function &quot;Some documentation&quot;))
-</code></pre> <p>If you need a different type of documentation, or want to be explicit, prepend its type to the expression.</p> <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
+</code></pre> <p>If you need a different type of documentation, or want to be explicit, prepend its type to the expression.</p> <pre><code>(docs:define-docs
   (<a href="http://l1sp.org/cl/function">function</a> my-function &quot;Some documentation&quot;)
   (<a href="http://l1sp.org/cl/variable">variable</a> *my-variable* &quot;Something else&quot;))
-</code></pre> <p>In order to make things look more homely, aliases exist that can be used instead:</p> <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
+</code></pre> <p>In order to make things look more homely, aliases exist that can be used instead:</p> <pre><code>(docs:define-docs
   (<a href="http://l1sp.org/cl/defun">defun</a> my-function
     &quot;Some documentation&quot;)
   (<a href="http://l1sp.org/cl/defvar">defvar</a> *my-variable*
     &quot;Something else&quot;))
-</code></pre> <p>Aliases exist for most of the <code>def*</code> expressions. Some expressions can take multiple arguments for the specifier, but the last in the expression is always the docstring:</p> <pre><code>(<a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">docs:define-docs</a>
+</code></pre> <p>Aliases exist for most of the <code>def*</code> expressions. Some expressions can take multiple arguments for the specifier, but the last in the expression is always the docstring:</p> <pre><code>(docs:define-docs
   (<a href="http://l1sp.org/cl/defmethod">defmethod</a> foo :append ((num integer) other)
     &quot;stuff&quot;))
-</code></pre> <p>You can also extend this system for your own documentation translators. If you need more complex behaviour than the default of <code>(<a href="http://l1sp.org/cl/documentation">documentation</a> specifier type)</code>, see <code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TRANSLATOR">define-documentation-translator</a></code>. If you are defining a new documentation type, you should also add a <code><a href="#DOCUMENTATION-UTILS:DOCUMENTATION-TEST">documentation-test</a></code> to ensure that <code><a href="#DOCUMENTATION-UTILS:CHECK">check</a></code> can verify that you actually did set a documentation.</p> </div>  </article> <article id="copyright">  <h2>Copyright</h2> <span>documentation-utils</span> is licensed under the <span><a href="https://tldrlegal.com/search?q=Artistic">Artistic</a></span> license.  © <span>Nicolas Hafner &lt;shinmera@tymoon.eu&gt;</span> .  This library can be obtained on <a href="https://github.com/Shinmera/documentation-utils">https://github.com/Shinmera/documentation-utils</a>.  </article>  <article id="symbol-index"> <h2>Package Index</h2> <ul><li class="package"> <h3> <a name="DOCUMENTATION-UTILS" href="#DOCUMENTATION-UTILS">DOCUMENTATION-UTILS</a> <span class="nicknames">(ORG.SHIRAKUMO.DOCUMENTATION-UTILS DOCS)</span> </h3> <ul><li> <a name="DOCUMENTATION-UTILS:*DOCUMENTATION-TESTS*"> </a> <article> <header class="special"> <span class="type">special</span>  <h4 class="name"><code><a href="#DOCUMENTATION-UTILS:*DOCUMENTATION-TESTS*">*DOCUMENTATION-TESTS*</a></code></h4>  </header> <pre class="docstring">Holds an alist of documentation types to test functions.
-
-The function should take one argument, the specifier, and
-return non-NIL if the symbol is bound for the given type.</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:*DOCUMENTATION-TRANSLATORS*"> </a> <article> <header class="special"> <span class="type">special</span>  <h4 class="name"><code><a href="#DOCUMENTATION-UTILS:*DOCUMENTATION-TRANSLATORS*">*DOCUMENTATION-TRANSLATORS*</a></code></h4>  </header> <pre class="docstring">Holds an alist of documentation types to translator functions.
-
-The function should take one argument, the specifier expression, and
-return a documentation form suitable to access the documentation
-for the given type.</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:DOCUMENTATION-TEST"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:DOCUMENTATION-TEST">DOCUMENTATION-TEST</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TYPE</code><code>)</code>  </header> <pre class="docstring">Access the documentation test function for the given type.
-
-See *DOCUMENTATION-TESTS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:DOCUMENTATION-TRANSLATOR"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:DOCUMENTATION-TRANSLATOR">DOCUMENTATION-TRANSLATOR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TYPE</code><code>)</code>  </header> <pre class="docstring">Access the documentation translator function for the given type.
-
-See *DOCUMENTATION-TRANSLATORS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:CHECK"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:CHECK">CHECK</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;KEY (PACKAGE *PACKAGE*) (INTERNAL T)</code><code>)</code>  </header> <pre class="docstring">Checks whether all symbols have documentation for all known types.
-
-If documentation is not set for a given symbol and type combination, a
-warning is signalled.
-
-See *DOCUMENTATION-TESTS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:REMOVE-DOCUMENTATION-TEST"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:REMOVE-DOCUMENTATION-TEST">REMOVE-DOCUMENTATION-TEST</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TYPE</code><code>)</code>  </header> <pre class="docstring">Remove the documentation test function for the given type.
-
-See *DOCUMENTATION-TESTS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:REMOVE-DOCUMENTATION-TRANSLATOR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:REMOVE-DOCUMENTATION-TRANSLATOR">REMOVE-DOCUMENTATION-TRANSLATOR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TYPE</code><code>)</code>  </header> <pre class="docstring">Remove the documentation translator function for the given type.
-
-See *DOCUMENTATION-TRANSLATORS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:DEFINE-DOCS"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCS">DEFINE-DOCS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Allows you to comfortably and easily set the documentation for your library.
-
-Each expression in the body can either take a two or many argument structure.
-In the two argument structure, the type is implicitly assumed to be 
-FUNCTION. The first argument is then the specifier, and the second the
-docstring. In the many argument structure the first argument is the
-type, the last is the docstring, and everything in between the specifier.
-
-The expansion of the documentation accessor --and thus the structure of
-the specifier-- is dependant on the applicable documentation translator.
-By default, the expansion is simply (DOCUMENTATION SPECIFIER TYPE).
-
-See *DOCUMENTATION-TRANSLATORS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-ALIAS"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-ALIAS">DEFINE-DOCUMENTATION-ALIAS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Shorthand to define an alias to a translator.
-
-This simply sets a delegating function that refers to the given type.
-
-See *DOCUMENTATION-TRANSLATORS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TEST"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TEST">DEFINE-DOCUMENTATION-TEST</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Shorthand to define a documentation test function.
-
-See *DOCUMENTATION-TESTS*</pre> </article> </li><li> <a name="DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TRANSLATOR"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TRANSLATOR">DEFINE-DOCUMENTATION-TRANSLATOR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Shorthand to define a documentation translator function.
-
-See *DOCUMENTATION-TRANSLATORS*</pre> </article> </li></ul> </li></ul> </article>  </main> </body> </html> 
+</code></pre> <p>You can also extend this system for your own documentation translators. If you need more complex behaviour than the default of <code>(<a href="http://l1sp.org/cl/documentation">documentation</a> specifier type)</code>, see <code>define-documentation-translator</code>. If you are defining a new documentation type, you should also add a <code>documentation-test</code> to ensure that <code>check</code> can verify that you actually did set a documentation.</p> </div>  </article> <article id="copyright">  <h2>Copyright</h2> <span>documentation-utils</span> is licensed under the <span><a href="https://tldrlegal.com/search?q=Artistic">Artistic</a></span> license.  © <span>Nicolas Hafner &lt;shinmera@tymoon.eu&gt;</span> .  This library can be obtained on <a href="https://github.com/Shinmera/documentation-utils">https://github.com/Shinmera/documentation-utils</a>.  </article>  </main> </body> </html> 
