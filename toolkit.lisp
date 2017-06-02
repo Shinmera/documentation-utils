@@ -49,7 +49,8 @@
          (lambda (form) (funcall (documentation-translator ',type) form))))
 
 (defun list-symbols (package &key (internal T))
-  (let ((symbs ()))
+  (let ((symbs ())
+        (package (find-package package)))
     (do-symbols (symb package (sort symbs #'string<))
       (when (and (eql (symbol-package symb) package)
                  (or internal (eql :external (nth-value 1 (find-symbol (string symb) package)))))
