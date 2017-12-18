@@ -46,12 +46,12 @@ Full protocol of docstring formatter.
             (form list))
     (let ((order (visiting-order generator node)))
       (dolist (next order)
-        (let ((data (assoc next form)))
+        (let ((data (getf next form)))
           (unless (null data)
             (visit-one output
                        generator
                        node
-                       (cdr data)))))
+                       data))))
       output)))
 
 #|
