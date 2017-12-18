@@ -14,5 +14,6 @@
   :serial T
   :components ((:file "package")
                (:file "toolkit")
+               (:file "docstring-formatter")
                (:file "documentation"))
   :depends-on (:trivial-indent))
