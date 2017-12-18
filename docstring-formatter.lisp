@@ -31,7 +31,7 @@ Full protocol of docstring formatter.
     (apply #'nconc (nreverse (call-next-method)))))
 
 
-(defgeneric visit-one (output generator node data))
+(defgeneric visit-one (output generator node label data))
 
 
 (defgeneric visit-all (output generator node form)
@@ -46,12 +46,10 @@ Full protocol of docstring formatter.
             (form list))
     (let ((order (visiting-order generator node)))
       (dolist (next order)
-        (let ((data (getf next form)))
+        (let ((data (getf form next)))
           (unless (null data)
-            (visit-one output
-                       generator
-                       node
-                       data))))
+            (visit-one output generator
+                       node next data))))
       output)))
 
 #|
