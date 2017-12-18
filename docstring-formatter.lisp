@@ -49,8 +49,8 @@ Full protocol of docstring formatter.
         (let ((data (getf form next)))
           (unless (null data)
             (visit-one output generator
-                       node next data))))
-      output)))
+                       node next data)))))
+    output))
 
 #|
 Basic node type hierarchy of Common Lisp.
