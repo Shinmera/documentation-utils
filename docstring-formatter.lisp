@@ -28,13 +28,13 @@ Full protocol of docstring formatter.
   (:method-combination list)
   (:method :around ((generator fundamental-docstring-formatter)
                     (node fundamental-type-node))
-    (apply #'nconc (reverse (call-next-method)))))
+    (apply #'append (reverse (call-next-method)))))
 
 
-(defgeneric visit-one (output generator data label node before)
-  (:method ((output t)
-            (generator fundamental-docstring-formatter)
+(defgeneric visit-one (output data generator label node before)
+  (:method ((output stream)
             (data (eql nil))
+            (generator fundamental-docstring-formatter)
             (label symbol)
             (node fundamental-type-node)
             (before list))
@@ -57,11 +57,11 @@ Full protocol of docstring formatter.
         (let ((data (getf form next)))
           (visit-one output
                      data
-                     next
                      generator
+                     next
                      node
                      before)
-          (unless (null next)
+          (unless (null data)
             (push next before)))))
     output))
 
@@ -183,45 +183,52 @@ Default formatting.
   ())
 
 
-(defmethod build-visiting-order ((generator default-docstring-formatter)
-                                 (node variable-node))
+(defmethod build-visiting-order list
+    ((generator default-docstring-formatter)
+     (node variable-node))
   '(:initial-value :description :examples :notes))
 
 
-(defmethod build-visiting-order ((generator default-docstring-formatter)
-                                 (node package-node))
+(defmethod build-visiting-order list
+    ((generator default-docstring-formatter)
+     (node package-node))
   '(:description :notes))
 
 
-(defmethod build-visiting-order ((generator default-docstring-formatter)
-                                 (node operator-node))
+(defmethod build-visiting-order list
+    ((generator default-docstring-formatter)
+     (node operator-node))
   '(:arguments :description :examples))
 
 
-(defmethod build-visiting-order ((generator default-docstring-formatter)
-                                 (node function-node))
+(defmethod build-visiting-order list
+    ((generator default-docstring-formatter)
+     (node function-node))
   '(:returns :exceptional-situations :side-effects :notes))
 
 
-(defmethod build-visiting-order ((generator default-docstring-formatter)
-                                 (node type-node))
+(defmethod build-visiting-order list
+    ((generator default-docstring-formatter)
+     (node type-node))
   '(:description :notes))
 
 
-(defmethod build-visiting-order ((generator default-docstring-formatter)
-                                 (node compiler-macro-node))
+(defmethod build-visiting-order list
+    ((generator default-docstring-formatter)
+     (node compiler-macro-node))
   '(:description :notes))
 
 
-(defmacro define-stream-visitors ((output output-class) (generator generator-class)
-                                  node label data before
-                                  &body body)
+(defmacro define-stream-visitors 
+  ((output output-class) (generator generator-class)
+   node label data before
+   &body body)
   `(progn
      ,@(mapcar (lambda (x)
                  (destructuring-bind ((node-class label-symbol d-class) . body) x
                    `(defmethod visit-one ((,output ,output-class)
-                                          (,generator ,generator-class)
                                           (,data ,d-class)
+                                          (,generator ,generator-class)
                                           (,label (eql ,label-symbol))
                                           (,node ,node-class)
                                           (,before list))
@@ -235,6 +242,13 @@ Default formatting.
   ((function-node :side-effects string) (format output "Side Effects:~% ~a" data))
   ((function-node :side-effects list) (format output "Side Effects:~%~{ * ~a~%~}" data))
   ((function-node :side-effects (eql nil)) (format output "No side effects."))
+  ((function-node :arguments list)
+   (format output "Arguments:~%")
+   (loop for d on data
+         do (destructuring-bind (arg desc) (first d)
+              (format output " ~a: ~a" arg desc)
+              (unless (endp (rest d))
+                (format output "~%")))))
   ((function-node :returns string) (format output "Returns:~% ~a" data))
   ((function-node :returns list) (format output "Returns:~%~{ * ~a~^~%~}" data))
   ((fundamental-type-node :notes string) (format output "Note:~% ~a" data))
