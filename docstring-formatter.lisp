@@ -28,7 +28,7 @@ Full protocol of docstring formatter.
   (:method-combination list)
   (:method :around ((generator fundamental-docstring-formatter)
                     (node fundamental-type-node))
-    (apply #'nconc (nreverse (call-next-method)))))
+    (apply #'nconc (reverse (call-next-method)))))
 
 
 (defgeneric visit-one (output generator node label data))
@@ -78,7 +78,7 @@ Basic node type hierarchy of Common Lisp.
   ())
 
 
-(defclass compiler-macro-node (operator-node)
+(defclass compiler-macro-node (fundamental-type-node)
   ())
 
 
@@ -161,3 +161,40 @@ Basic stuff for handling standard lisp.
   (defmethod type-node-instance ((generator basic-docstring-formatter)
                                  (type (eql 'package-node)))
     package-node))
+
+#|
+Default formatting.
+|#
+
+(defclass default-docstring-formatter (basic-docstring-formatter)
+  ())
+
+
+(defmethod build-visiting-order ((generator default-docstring-formatter)
+                                 (node variable-node))
+  '(:initial-value :description :examples))
+
+
+(defmethod build-visiting-order ((generator default-docstring-formatter)
+                                 (node package-node))
+  '(:description))
+
+
+(defmethod build-visiting-order ((generator default-docstring-formatter)
+                                 (node operator-node))
+  '(:arguments :description :examples))
+
+
+(defmethod build-visiting-order ((generator default-docstring-formatter)
+                                 (node function-node))
+  '(:returns :exceptional-situations))
+
+
+(defmethod build-visiting-order ((generator default-docstring-formatter)
+                                 (node type-node))
+  '(:description))
+
+
+(defmethod build-visiting-order ((generator default-docstring-formatter)
+                                 (node compiler-macro-node))
+  '(:description))
