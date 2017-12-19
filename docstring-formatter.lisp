@@ -56,11 +56,29 @@ Full protocol of docstring formatter.
 Basic node type hierarchy of Common Lisp.
 |#
 
-(defclass operator-node (fundamental-node)
+;; TODO not everything is handled in specific way, because currently we are using symbol passed to setf documentation
+
+(defclass operator-node (fundamental-type-node)
   ())
 
 
 (defclass function-node (operator-node)
+  ())
+
+
+(defclass type-node (fundamental-type-node)
+  ())
+
+
+(defclass variable-node (fundamental-type-node)
+  ())
+
+
+(defclass method-combination-node (fundamental-type-node)
+  ())
+
+
+(defclass compiler-macro-node (operator-node)
   ())
 
 
@@ -72,7 +90,7 @@ Basic node type hierarchy of Common Lisp.
   ())
 
 
-(defclass record-node (fundamental-node)
+(defclass record-node (type-node)
   ())
 
 
@@ -91,6 +109,55 @@ Basic node type hierarchy of Common Lisp.
 (defclass error-node (condition-node)
   ())
 
-#|
 
+(defclass package-node (fundamental-type-node)
+  ())
+
+#|
+Basic stuff for handling standard lisp.
 |#
+
+(defclass basic-docstring-formatter (fundamental-docstring-formatter)
+  ())
+
+
+(let ((function-node (make-instance 'function-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'function)))
+     function-node))
+
+
+(let ((generic-node (make-instance 'generic-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'generic)))
+    generic-node))
+
+
+(let ((type-node (make-instance 'type-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'type)))
+    type-node))
+
+
+(let ((variable-node (make-instance 'variable-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'variable-node)))
+    variable-node))
+
+
+(let ((method-combination-node (make-instance 'method-combination-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'method-combination-node)))
+    method-combination-node))
+
+
+(let ((compiler-macro (make-instance 'compiler-macro-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'compile-macro-node)))
+    compiler-macro))
+
+
+(let ((package-node (make-instance 'package-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'package-node)))
+    package-node))
