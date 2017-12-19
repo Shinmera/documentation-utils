@@ -136,13 +136,19 @@ Basic stuff for handling standard lisp.
 
 (let ((function-node (make-instance 'function-node)))
   (defmethod type-node-instance ((generator basic-docstring-formatter)
-                                 (type (eql 'function)))
-     function-node))
+                                 (type (eql 'defun)))
+    function-node))
+
+
+(let ((macro-node (make-instance 'macro-node)))
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'defmacro)))
+    macro-node))
 
 
 (let ((generic-node (make-instance 'generic-node)))
   (defmethod type-node-instance ((generator basic-docstring-formatter)
-                                 (type (eql 'generic)))
+                                 (type (eql 'defgeneric)))
     generic-node))
 
 
@@ -154,25 +160,28 @@ Basic stuff for handling standard lisp.
 
 (let ((variable-node (make-instance 'variable-node)))
   (defmethod type-node-instance ((generator basic-docstring-formatter)
-                                 (type (eql 'variable-node)))
+                                 (type (eql 'defvar)))
+    variable-node)
+  (defmethod type-node-instance ((generator basic-docstring-formatter)
+                                 (type (eql 'defconstant)))
     variable-node))
 
 
 (let ((method-combination-node (make-instance 'method-combination-node)))
   (defmethod type-node-instance ((generator basic-docstring-formatter)
-                                 (type (eql 'method-combination-node)))
+                                 (type (eql 'method-combination)))
     method-combination-node))
 
 
 (let ((compiler-macro (make-instance 'compiler-macro-node)))
   (defmethod type-node-instance ((generator basic-docstring-formatter)
-                                 (type (eql 'compile-macro-node)))
+                                 (type (eql 'define-compiler-macro)))
     compiler-macro))
 
 
 (let ((package-node (make-instance 'package-node)))
   (defmethod type-node-instance ((generator basic-docstring-formatter)
-                                 (type (eql 'package-node)))
+                                 (type (eql 'defpackage)))
     package-node))
 
 #|
@@ -219,7 +228,7 @@ Default formatting.
   '(:description :notes))
 
 
-(defmacro define-stream-visitors 
+(defmacro define-stream-visitors
   ((output output-class) (generator generator-class)
    node label data before
    &body body)
