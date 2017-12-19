@@ -31,7 +31,14 @@ Full protocol of docstring formatter.
     (apply #'nconc (reverse (call-next-method)))))
 
 
-(defgeneric visit-one (output generator node label data))
+(defgeneric visit-one (output generator data label node before)
+  (:method ((output t)
+            (generator fundamental-docstring-formatter)
+            (data (eql nil))
+            (label symbol)
+            (node fundamental-type-node)
+            (before list))
+    nil))
 
 
 (defgeneric visit-all (output generator node form)
@@ -44,12 +51,18 @@ Full protocol of docstring formatter.
             (generator fundamental-docstring-formatter)
             (node fundamental-type-node)
             (form list))
-    (let ((order (visiting-order generator node)))
+    (let ((order (visiting-order generator node))
+          (before nil))
       (dolist (next order)
         (let ((data (getf form next)))
-          (unless (null data)
-            (visit-one output generator
-                       node next data)))))
+          (visit-one output
+                     data
+                     next
+                     generator
+                     node
+                     before)
+          (unless (null next)
+            (push next before)))))
     output))
 
 #|
@@ -172,12 +185,12 @@ Default formatting.
 
 (defmethod build-visiting-order ((generator default-docstring-formatter)
                                  (node variable-node))
-  '(:initial-value :description :examples))
+  '(:initial-value :description :examples :notes))
 
 
 (defmethod build-visiting-order ((generator default-docstring-formatter)
                                  (node package-node))
-  '(:description))
+  '(:description :notes))
 
 
 (defmethod build-visiting-order ((generator default-docstring-formatter)
@@ -187,14 +200,47 @@ Default formatting.
 
 (defmethod build-visiting-order ((generator default-docstring-formatter)
                                  (node function-node))
-  '(:returns :exceptional-situations))
+  '(:returns :exceptional-situations :side-effects :notes))
 
 
 (defmethod build-visiting-order ((generator default-docstring-formatter)
                                  (node type-node))
-  '(:description))
+  '(:description :notes))
 
 
 (defmethod build-visiting-order ((generator default-docstring-formatter)
                                  (node compiler-macro-node))
-  '(:description))
+  '(:description :notes))
+
+
+(defmacro define-stream-visitors ((output output-class) (generator generator-class)
+                                  node label data before
+                                  &body body)
+  `(progn
+     ,@(mapcar (lambda (x)
+                 (destructuring-bind ((node-class label-symbol d-class) . body) x
+                   `(defmethod visit-one ((,output ,output-class)
+                                          (,generator ,generator-class)
+                                          (,data ,d-class)
+                                          (,label (eql ,label-symbol))
+                                          (,node ,node-class)
+                                          (,before list))
+                      (unless (endp ,before)
+                        (format output "~%~%"))
+                      ,@body)))
+               body)))
+
+
+(define-stream-visitors (output stream) (generator default-docstring-formatter) node label data before
+  ((function-node :side-effects string) (format output "Side Effects:~% ~a" data))
+  ((function-node :side-effects list) (format output "Side Effects:~%~{ * ~a~%~}" data))
+  ((function-node :side-effects (eql nil)) (format output "No side effects."))
+  ((function-node :returns string) (format output "Returns:~% ~a" data))
+  ((function-node :returns list) (format output "Returns:~%~{ * ~a~^~%~}" data))
+  ((fundamental-type-node :notes string) (format output "Note:~% ~a" data))
+  ((fundamental-type-node :notes list) (format output "Notes:~%~{ * ~a~^~%~}" data))
+  ((fundamental-type-node :description string) (format output "~a" data))
+  ((fundamental-type-node :examples list) (format output "Examples:~%~{ ~a~^~%~^~%~}" data))
+  ((fundamental-type-node :examples string) (format output "Example:~% ~a" data))
+  ((function-node :exceptional-situations list) (format output "Exceptional Situations:~%~{ * ~a~^~%~}" data))
+  ((function-node :exceptional-situations string) (format output "Exceptional Situations:~% ~a" data)))
