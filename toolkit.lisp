@@ -68,7 +68,7 @@
   (multiple-value-bind (formatter expressions)
       (if (eq :formatter (first expressions))
           (values (second expressions) (cddr expressions))
-          (values 'default-docstring-formatter expressions))
+          (values 'basic-docstring-formatter expressions))
     (let ((!formatter (gensym))
           (!node (gensym))
           (!stream (gensym)))
