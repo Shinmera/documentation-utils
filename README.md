@@ -24,7 +24,7 @@ In order to make things look more homely, aliases exist that can be used instead
 In addition to passing raw strings as docstrings, you can also use small integral docstring formatter that makes slightly easier to keep documentation tidy. It is based around plists, and looks somewhat like this:
 
     (docs:define-docs
-      (defun foo :formatter basic-docstring-formatter
+      (defun foo :formatter docs:basic-docstring-formatter
         (:returns "Something."
          :arguments ((bar "this is a bar argument"))
          :examples "You wish!"
