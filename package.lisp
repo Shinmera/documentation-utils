@@ -11,7 +11,7 @@
   (:export
    #:*documentation-tests*
    #:*documentation-translators*
-   #:basic-string-formatter
+   #:basic-docstring-formatter
    #:build-visiting-order
    #:check
    #:define-docs
