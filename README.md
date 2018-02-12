@@ -25,10 +25,10 @@ In addition to passing raw strings as docstrings, you can also use small integra
 
     (docs:define-docs
       (defun foo :formatter basic-docstring-formatter
-        :returns "Something."
-        :arguments ((bar "this is a bar argument"))
-        :examples "You wish!"
-        :description "This is just example."))
+        (:returns "Something."
+         :arguments ((bar "this is a bar argument"))
+         :examples "You wish!"
+         :description "This is just example.")))
 
 First option is :formatter, which designates type that shall be used to dispatch formatting logic. Depending on it, different styles of formatting can be used and different paragraphs can appear in docstring. BASIC-DOCSTRING-FORMATTER allows for following paragraphs :description :returns :examples :side-effects :exceptional-situations :notes and resulting docstring will always have provided paragraphs in this order. Paragraphs are excpected to have specific structure. Description accepts value in form of the string, returns; examples; notes and exceptional-stiuations are expected to be either string or list of strings. Arguments paragraph accept list of lists where first element designates name of the argument, and the second element is description of the argument.
 
