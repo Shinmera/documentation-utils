@@ -8,6 +8,7 @@
 (defpackage #:documentation-utils
   (:nicknames #:docs #:org.shirakumo.documentation-utils)
   (:use #:cl)
+  (:shadow #:formatter)
   (:export
    #:*documentation-tests*
    #:documentation-test
@@ -19,4 +20,7 @@
    #:define-documentation-translator
    #:define-documentation-alias
    #:check
+   #:formatter
+   #:format-documentation
+   #:basic-formatter
    #:define-docs))

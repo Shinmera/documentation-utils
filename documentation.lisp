@@ -65,17 +65,79 @@ warning is signalled.
 
 See *DOCUMENTATION-TESTS*")
 
+  (type formatter
+    "Base class for all documentation formatters.
+
+A documentation formatter is responsible for translating user-defined
+documentation expressions into docstrings usable by the underlying
+documentation storage. This can also be used to hook it into other systems
+that access documentation and may enrich it with further styling or
+information.
+
+The only relevant function for this class is FORMAT-DOCUMENTATION, which
+is used to perform the translation.
+
+See FORMAT-DOCUMENTATION")
+
+  (function format-documentation
+    "Processes the documentation string according to the formatter's rules.
+
+Passed along are the three values that make up a documentation definition:
+
+- The fundamental type of the definition as used in DOCUMENTATION.
+- An additional set of variants used to distinguish more complicated
+  definitions. For instance, for methods this would be the method qualifiers.
+- The expression used for the actual documentation. This is always the last
+  expression within a documentation definition expression.
+
+The function should either error on an invalid documentation expression, or
+return a string to be passed to the underlying documentation storage.
+
+You may use this function to store the documentation expression elsewhere
+so that it may be processed into different formats using additional markup
+than is appropriate for plain strings.
+
+See FORMATTER")
+
+  (type plain-formatter
+    "A formatter that only allows strings and emits them verbatim.
+
+This is the default formatter.
+
+See FORMATTER")
+
+  (function split-body-options
+    "Splits the body of expressions into two parts, a plist, and a body.
+
+Returned are two values: a plist, and a body. The plist is composed of
+all keyword-value pairs found at the beginning of the body. The returned
+body is all the remaining expressions.")
+
+  (function removef
+    "Removes the given set of keys from the plist and returns a fresh copy.")
+
   (function define-docs
     "Allows you to comfortably and easily set the documentation for your library.
 
 Each expression in the body can either take a two or many argument structure.
 In the two argument structure, the type is implicitly assumed to be 
 FUNCTION. The first argument is then the specifier, and the second the
-docstring. In the many argument structure the first argument is the
-type, the last is the docstring, and everything in between the specifier.
+documentation. In the many argument structure the first argument is the
+type, the last is the documentation, and everything in between the specifier.
 
 The expansion of the documentation accessor --and thus the structure of
 the specifier-- is dependant on the applicable documentation translator.
-By default, the expansion is simply (DOCUMENTATION SPECIFIER TYPE).
+By default, the expansion is simply (CL:DOCUMENTATION SPECIFIER TYPE).
 
-See *DOCUMENTATION-TRANSLATORS*"))
+In addition to the actual documentation expressions, the docs definition may
+begin with a set of keyword-value pairs. These options supply initargs for
+the documentation formatter. By default, the formatter is PLAIN-FORMATTER,
+but a formatter class of your own can be selected with the :FORMATTER option.
+This formatter will then translate the documentation expression at compile time
+to reduce it into a docstring as expected by the underlying documentation
+storage. Note that the initarg values are used at macroexpansion time, and so
+are used as literals.
+
+See *DOCUMENTATION-TRANSLATORS*
+See FORMAT-DOCUMENTATION
+See PLAIN-FORMATTER"))

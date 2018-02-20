@@ -64,14 +64,45 @@
              (when (and (funcall test symb) (not (handler-bind ((warning #'muffle-warning)) (documentation symb type))))
                (warn "No documentation for ~(~a~) ~a." type symb)))))
 
+(defclass formatter ()
+  ())
+
+(defgeneric format-documentation (formatter type var documentation))
+
+(defclass plain-formatter (formatter)
+  ())
+
+(defmethod format-documentation ((formatter plain-formatter) type var documentation)
+  (check-type documentation string)
+  documentation)
+
+(defun split-body-options (body)
+  (values (loop for list = body then rest
+                for (key val . rest) = list
+                while (and (cdr list) (keywordp key))
+                collect key collect val
+                finally (setf body list))
+          body))
+
+(defun removef (plist &rest keys)
+  (loop for (key val) on plist by #'cddr
+        for test = (find key keys)
+        unless test collect key
+        unless test collect val))
+
 (defmacro define-docs (&body expressions)
-  `(progn
-     ,@(loop for expr in expressions
-             for length = (length expr)
-             for type = (if (< 2 length) (first expr) 'function)
-             for var = (if (< 2 length) (rest (butlast expr)) (butlast expr))
-             for doc = (car (last expr))
-             collect `(setf ,(funcall (documentation-translator type) var) ,doc))))
+  (multiple-value-bind (options expressions) (split-body-options expressions)
+    (let ((formatter (apply #'make-instance
+                            (getf options :formatter 'plain-formatter)
+                            (removef options :formatter))))
+      `(progn
+         ,@(loop for expr in expressions
+                 for length = (length expr)
+                 for type = (if (< 2 length) (first expr) 'function)
+                 for var = (if (< 2 length) (rest (butlast expr)) (butlast expr))
+                 for doc = (car (last expr))
+                 collect `(setf ,(funcall (documentation-translator type) var)
+                                ,(format-documentation formatter type var doc)))))))
 
 (trivial-indent:define-indentation define-docs (&rest (&whole 2 0 &body)))
 

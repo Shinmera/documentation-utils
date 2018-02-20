@@ -28,3 +28,36 @@ Aliases exist for most of the `def*` expressions. Some expressions can take mult
         "stuff"))
 
 You can also extend this system for your own documentation translators. If you need more complex behaviour than the default of `(documentation specifier type)`, see `define-documentation-translator`. If you are defining a new documentation type, you should also add a `documentation-test` to ensure that `check` can verify that you actually did set a documentation.
+
+## Custom Documentation Syntax
+In case you would like to use a richer markup than plaintext within your documentation, you can use the `formatter` facility. Formatters take the last expression in a documentation definition expression and translate it to a docstring. This means that, with the right formatter, you can use a format other than plain docstrings, or even hook this into another documentation processing system in order to emit richer text while staying compatible to the standard `cl:documentation` facility.
+
+In order to switch the formatter, you can use the `define-docs` options like so:
+
+    (docs:define-docs
+      :formatter my-formatter
+      (function my-function
+        (:arguments (a "Something about this"
+                     b "Something about that")
+         :return-value "Nothing useful"
+         :summary "This function does something, though I don't know what.")))
+
+Aside from the `:formatter` option, you can pass an arbitrary number of other options as well, which will be used as initargs for the formatter instance. Note that this is all done at macroexpansion-time, and the initarg values are thus used as literals.
+
+The formatter presented above is just an example and is not provided by documentation-utils. Since I can't anticipate people's overall preferences in documentation style, it is up to you to write something more complicated to extend documentation-utils capabilities. Doing so should just be a matter of subclassing `formatter` and adding a method to `format-documentation`, though. As an example, the above could be done as follows:
+
+    (defclass my-formatter (formatter) ())
+    
+    (defmethod format-documentation ((formatter my-formatter) type var docs)
+      (format NIL "~a~@[
+    
+    Arguments:~{
+      ~a: ~a~}~]~@[
+    
+    Return value:
+      ~a~]"
+              (getf docs :summary)
+              (getf docs :arguments)
+              (getf docs :return-value)))
+
+I'm sure you can imagine your own way of doing things.
