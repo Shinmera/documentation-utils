@@ -65,17 +65,30 @@
                (warn "No documentation for ~(~a~) ~a." type symb)))))
 
 (defmacro define-docs (&body expressions)
-  `(progn
-     ,@(loop for expr in expressions
-             for length = (length expr)
-             for type = (if (< 2 length) (first expr) 'function)
-             for var = (if (< 2 length) (rest (butlast expr)) (butlast expr))
-             for doc = (car (last expr))
-             collect `(setf ,(funcall (documentation-translator type) var) ,doc))))
+  (multiple-value-bind (formatter expressions)
+      (if (eq :formatter (first expressions))
+          (values (second expressions) (cddr expressions))
+          (values 'basic-docstring-formatter expressions))
+    (let ((!formatter (gensym))
+          (!node (gensym))
+          (!stream (gensym)))
+      `(let ((,!formatter (make-instance ',formatter)))
+         ,@(loop for expr in expressions
+                 for length = (length expr)
+                 for type = (if (< 2 length) (first expr) 'function)
+                 for var = (if (< 2 length) (rest (butlast expr)) (butlast expr))
+                 for doc = (car (last expr))
+                 collect `(setf ,(funcall (documentation-translator type) var)
+                                (let ((,!node (type-node-instance ,!formatter ',type)))
+                                  (with-output-to-string (,!stream)
+                                    (visit-all ,!stream
+                                               ,!formatter
+                                               ,!node
+                                               ,(if (listp doc)
+                                                    (list 'quote doc)
+                                                    doc))))))))))
 
 (trivial-indent:define-indentation define-docs (&rest (&whole 2 0 &body)))
-
-
 
 (setf (documentation-test 'function) #'fboundp)
 (setf (documentation-test 'variable) #'boundp)

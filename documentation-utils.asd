@@ -13,6 +13,7 @@
   :homepage "https://github.com/Shinmera/documentation-utils"
   :serial T
   :components ((:file "package")
+               (:file "docstring-formatter")
                (:file "toolkit")
                (:file "documentation"))
   :depends-on (:trivial-indent))

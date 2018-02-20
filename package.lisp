@@ -10,13 +10,20 @@
   (:use #:cl)
   (:export
    #:*documentation-tests*
-   #:documentation-test
-   #:remove-documentation-test
-   #:define-documentation-test
    #:*documentation-translators*
-   #:documentation-translator
-   #:remove-documentation-translator
-   #:define-documentation-translator
-   #:define-documentation-alias
+   #:basic-docstring-formatter
+   #:build-visiting-order
    #:check
-   #:define-docs))
+   #:define-docs
+   #:define-documentation-alias
+   #:define-documentation-test
+   #:define-documentation-translator
+   #:documentation-test
+   #:documentation-translator
+   #:fundamental-docstring-formatter
+   #:fundamental-type-node
+   #:remove-documentation-test
+   #:remove-documentation-translator
+   #:visit-all
+   #:visit-one
+   #:visiting-order))
