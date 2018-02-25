@@ -113,7 +113,18 @@ return non-NIL if the symbol is bound for the given type.</pre></div> </article>
 
 The function should take one argument, the specifier expression, and
 return a documentation form suitable to access the documentation
-for the given type.</pre></div> </article> </li><li> <a name="DOCUMENTATION-UTILS:FORMATTER"> </a> <article id="CLASS DOCUMENTATION-UTILS:FORMATTER"> <header class="class"> <span class="type">class</span>  <h4 class="name"><code><a href="#CLASS%20DOCUMENTATION-UTILS%3AFORMATTER">FORMATTER</a></code></h4>  </header> <div class="docstring"><pre>Base class for all documentation formatters.
+for the given type.</pre></div> </article> </li><li> <a name="DOCUMENTATION-UTILS:DOCUMENTATION-FORMATTER"> </a> <article id="CLASS DOCUMENTATION-UTILS:DOCUMENTATION-FORMATTER"> <header class="class"> <span class="type">class</span>  <h4 class="name"><code><a href="#CLASS%20DOCUMENTATION-UTILS%3ADOCUMENTATION-FORMATTER">DOCUMENTATION-FORMATTER</a></code></h4>  </header> <div class="docstring"><pre>Base class for all documentation formatters.
+
+A documentation formatter is responsible for translating user-defined
+documentation expressions into docstrings usable by the underlying
+documentation storage. This can also be used to hook it into other systems
+that access documentation and may enrich it with further styling or
+information.
+
+The only relevant function for this class is FORMAT-DOCUMENTATION, which
+is used to perform the translation.
+
+See <a href="#DOCUMENTATION-UTILS:FORMAT-DOCUMENTATION">FORMAT-DOCUMENTATION</a></pre></div> </article> </li><li> <a name="DOCUMENTATION-UTILS:FORMATTER"> </a> <article id="CLASS DOCUMENTATION-UTILS:FORMATTER"> <header class="class"> <span class="type">class</span>  <h4 class="name"><code><a href="#CLASS%20DOCUMENTATION-UTILS%3AFORMATTER">FORMATTER</a></code></h4>  </header> <div class="docstring"><pre>Base class for all documentation formatters.
 
 A documentation formatter is responsible for translating user-defined
 documentation expressions into docstrings usable by the underlying
@@ -154,7 +165,7 @@ You may use this function to store the documentation expression elsewhere
 so that it may be processed into different formats using additional markup
 than is appropriate for plain strings.
 
-See <a href="#DOCUMENTATION-UTILS:FORMATTER">FORMATTER</a></pre></div> </article> </li><li> <a name="DOCUMENTATION-UTILS:DEFINE-DOCS"> </a> <article id="MACRO DOCUMENTATION-UTILS:DEFINE-DOCS"> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#MACRO%20DOCUMENTATION-UTILS%3ADEFINE-DOCS">DEFINE-DOCS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;BODY EXPRESSIONS</code><code>)</code>  </header> <div class="docstring"><pre>Allows you to comfortably and easily set the documentation for your library.
+See <a href="#DOCUMENTATION-UTILS:DOCUMENTATION-FORMATTER">DOCUMENTATION-FORMATTER</a></pre></div> </article> </li><li> <a name="DOCUMENTATION-UTILS:DEFINE-DOCS"> </a> <article id="MACRO DOCUMENTATION-UTILS:DEFINE-DOCS"> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#MACRO%20DOCUMENTATION-UTILS%3ADEFINE-DOCS">DEFINE-DOCS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;BODY EXPRESSIONS</code><code>)</code>  </header> <div class="docstring"><pre>Allows you to comfortably and easily set the documentation for your library.
 
 Each expression in the body can either take a two or many argument structure.
 In the two argument structure, the type is implicitly assumed to be 
