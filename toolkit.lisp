@@ -64,12 +64,12 @@
              (when (and (funcall test symb) (not (handler-bind ((warning #'muffle-warning)) (documentation symb type))))
                (warn "No documentation for ~(~a~) ~a." type symb)))))
 
-(defclass formatter ()
+(defclass documentation-formatter ()
   ())
 
 (defgeneric format-documentation (formatter type var documentation))
 
-(defclass plain-formatter (formatter)
+(defclass plain-formatter (documentation-formatter)
   ())
 
 (defmethod format-documentation ((formatter plain-formatter) type var documentation)

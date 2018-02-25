@@ -65,7 +65,7 @@ warning is signalled.
 
 See *DOCUMENTATION-TESTS*")
 
-  (type formatter
+  (type documentation-formatter
     "Base class for all documentation formatters.
 
 A documentation formatter is responsible for translating user-defined
@@ -97,14 +97,14 @@ You may use this function to store the documentation expression elsewhere
 so that it may be processed into different formats using additional markup
 than is appropriate for plain strings.
 
-See FORMATTER")
+See DOCUMENTATION-FORMATTER")
 
   (type plain-formatter
     "A formatter that only allows strings and emits them verbatim.
 
 This is the default formatter.
 
-See FORMATTER")
+See DOCUMENTATION-FORMATTER")
 
   (function split-body-options
     "Splits the body of expressions into two parts, a plist, and a body.
