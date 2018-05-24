@@ -12,7 +12,8 @@
 
   (defmethod format-documentation ((formatter multilang-formatter) type var documentation)
     (let* ((documentation (etypecase documentation
-                            (string (list multilang-documentation:*language* documentation))
+                            (string (list (multilang-documentation:identifier multilang-documentation:*language*)
+                                          documentation))
                             (cons documentation)))
            (docform (funcall (documentation-translator type) var))
            (default (loop for (lang docstring) on documentation by #'cddr
