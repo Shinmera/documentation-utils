@@ -65,6 +65,18 @@ warning is signalled.
 
 See *DOCUMENTATION-TESTS*")
 
+  (variable *default-formatter*
+    "Variable for the default formatter to use.
+
+This should be either a DOCUMENTATION-FORMATTER instance, or a symbol
+naming the class of one.
+
+By default this value is an instance of PLAIN-FORMATTER.
+
+See DOCUMENTATION-FORMATTER
+See PLAIN-FORMATTER
+See DEFINE-DOCS")
+
   (type documentation-formatter
     "Base class for all documentation formatters.
 
@@ -131,13 +143,15 @@ By default, the expansion is simply (CL:DOCUMENTATION SPECIFIER TYPE).
 
 In addition to the actual documentation expressions, the docs definition may
 begin with a set of keyword-value pairs. These options supply initargs for
-the documentation formatter. By default, the formatter is PLAIN-FORMATTER,
+the documentation formatter. By default, the formatter is *DEFAULT-FORMATTER*,
 but a formatter class of your own can be selected with the :FORMATTER option.
 This formatter will then translate the documentation expression at compile time
 to reduce it into a docstring as expected by the underlying documentation
 storage. Note that the initarg values are used at macroexpansion time, and so
-are used as literals.
+are used as literals. If the chosen formatter is already a formatter instance,
+the initargs are used with REINITIALIZE-INSTANCE. Otherwise if the formatter
+is a symbol, MAKE-INSTANCE Is used.
 
 See *DOCUMENTATION-TRANSLATORS*
 See FORMAT-DOCUMENTATION
-See PLAIN-FORMATTER"))
+See *DEFAULT-FORMATTER*"))

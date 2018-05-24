@@ -90,11 +90,16 @@
         unless test collect key
         unless test collect val))
 
+(defvar *default-formatter* (make-instance 'plain-formatter))
+
 (defmacro define-docs (&body expressions)
   (multiple-value-bind (options expressions) (split-body-options expressions)
-    (let ((formatter (apply #'make-instance
-                            (getf options :formatter 'plain-formatter)
-                            (removef options :formatter))))
+    (let* ((formatter (or (getf options :formatter)
+                          *default-formatter*))
+           (formatter (apply (etypecase formatter
+                               (documentation-formatter #'reinitialize-instance)
+                               (symbol #'make-instance))
+                             formatter (removef options :formatter))))
       `(progn
          ,@(loop for expr in expressions
                  for length = (length expr)

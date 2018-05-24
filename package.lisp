@@ -19,6 +19,7 @@
    #:define-documentation-translator
    #:define-documentation-alias
    #:check
+   #:*default-formatter*
    #:documentation-formatter
    #:format-documentation
    #:basic-formatter
