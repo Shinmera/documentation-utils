@@ -61,3 +61,14 @@ The formatter presented above is just an example and is not provided by document
               (getf docs :return-value)))
 
 I'm sure you can imagine your own way of doing things.
+
+## Multiple Language Support
+If you would like to provide documentation for your system in multiple languages, you can use the `multilang-documentation-utils` system, which relies on [multilang-documentation](https://shinmera.github.io/multilang-documentation). You can then use a plist of languages and docstrings as the docstring in a definition.
+
+Note that this uses the formatter mechanism to do its work. If you want to use a custom formatter in addition, you'll need to change it to output the appropriate docstrings to `multilang-documentation:documentation`.
+
+    (docs:define-docs
+      (function foo
+        (:en "Does some fooey"
+         :de "Macht einen Quatsch"
+         :ja "出鱈目をします。")))

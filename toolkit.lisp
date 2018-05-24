@@ -111,8 +111,6 @@
 
 (trivial-indent:define-indentation define-docs (&rest (&whole 2 0 &body)))
 
-
-
 (setf (documentation-test 'function) #'fboundp)
 (setf (documentation-test 'variable) #'boundp)
 (setf (documentation-test 'compiler-macro) #'compiler-macro-function)
