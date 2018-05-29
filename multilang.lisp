@@ -31,11 +31,10 @@
              (warn "Don't know how to deal with ~s. Can't expand to multilang definition." docform)
              default))))
 
-  (setf *default-formatter* (make-instance 'multilang-formatter))
   (export 'multilang-formatter))
 
 (define-docs
-  :formatter multilang-formatter
+  :formatter docs:multilang-formatter
   (type multilang-formatter
     (:en "This formatter allows specifying docstrings for multiple languages at once.
 

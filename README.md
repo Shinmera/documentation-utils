@@ -68,6 +68,7 @@ If you would like to provide documentation for your system in multiple languages
 Note that this uses the formatter mechanism to do its work. If you want to use a custom formatter in addition, you'll need to change it to output the appropriate docstrings to `multilang-documentation:documentation`.
 
     (docs:define-docs
+      :formatter docs:multilang-formatter
       (function foo
         (:en "Does some fooey"
          :de "Macht einen Quatsch"
