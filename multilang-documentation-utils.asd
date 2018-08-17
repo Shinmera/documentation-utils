@@ -10,7 +10,9 @@
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
   :description "Multiple-languages support for documentation-utils."
-  :homepage "https://github.com/Shinmera/documentation-utils"
+  :homepage "https://Shinmera.github.io/documentation-utils/"
+  :bug-tracker "https://github.com/Shinmera/documentation-utils/issues"
+  :source-control (:git "https://github.com/Shinmera/documentation-utils.git")
   :serial T
   :components ((:file "multilang"))
   :depends-on (:documentation-utils
