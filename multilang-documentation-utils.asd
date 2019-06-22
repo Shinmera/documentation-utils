@@ -6,7 +6,7 @@
 
 (asdf:defsystem multilang-documentation-utils
   :version "1.1.0"
-  :license "Artistic"
+  :license "zlib"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
   :description "Multiple-languages support for documentation-utils."

@@ -6,7 +6,7 @@
 
 (asdf:defsystem documentation-utils
   :version "1.2.0"
-  :license "Artistic"
+  :license "zlib"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
   :description "A few simple tools to help you with documenting your library."
