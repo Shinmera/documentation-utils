@@ -150,7 +150,7 @@ to reduce it into a docstring as expected by the underlying documentation
 storage. Note that the initarg values are used at macroexpansion time, and so
 are used as literals. If the chosen formatter is already a formatter instance,
 the initargs are used with REINITIALIZE-INSTANCE. Otherwise if the formatter
-is a symbol, MAKE-INSTANCE Is used.
+is a symbol, MAKE-INSTANCE is used.
 
 See *DOCUMENTATION-TRANSLATORS*
 See FORMAT-DOCUMENTATION
