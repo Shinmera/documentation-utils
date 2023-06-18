@@ -126,7 +126,7 @@
            (clean-specs (loop for arg in specializers
                               until (find arg lambda-list-keywords)
                               collect (if (listp arg) (second arg) T))))
-      `(documentation (find-method #',func ',qualifiers ',clean-specs) 't))))
+      `(documentation (find-method #',func ',qualifiers ',(mapcar #'find-class clean-specs)) 't))))
 
 (define-documentation-alias defun function)
 (define-documentation-alias defmacro function)
