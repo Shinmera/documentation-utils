@@ -1,0 +1,183 @@
+<!DOCTYPE html> <html lang="EN"> <head> <meta charset="utf-8"> <title>Documentation Utils</title> <style>html body{margin:0 auto 0 auto;padding:20px;max-width:1024px;font-family:sans-serif;font-size:14pt;overflow-y:scroll;}html body a{text-decoration:none;}html body a[href]{color:#0055AA;}html body a[href]:hover{color:#0088EE;}html body pre{background:#FAFAFA;border:1px solid #DDDDDD;padding:0.75em;overflow-x:auto;}html body pre >code a[href]{color:#223388;}article.project h1{font-size:1.7em;}article.project h1,article.project h2,article.project h3,article.project h4,article.project h5,article.project h6{margin:0.2em 0 0.1em 0;text-indent:1em;}article.project >header{text-align:center;}article.project >header img.logo{display:block;margin:auto;max-height:170px;}article.project >header h1{display:inline-block;text-indent:0;font-size:2.5em;}article.project >header .version{vertical-align:bottom;}article.project >header .languages{margin-top:-0.5em;text-transform:capitalize;}article.project >header .description{margin:0;}article.project >header .pages{margin-top:0.5em;font-size:1.2em;text-transform:capitalize;}article.project >header .pages a{display:inline-block;padding:0 0.2em;}article.project >section{margin:1em 0 1em 0;}article.project >section img{max-width:100%;}article.project #index >ul{list-style:none;margin:0;padding:0;}article.project .row label{display:inline-block;min-width:8em;}article.project #system .row{display:flex;}article.project #system #dependencies{display:inline;margin:0;padding:0;}article.project #system #dependencies li{display:inline;padding:0 0.2em;}article.project #system #author label{vertical-align:top;}article.project #system #author ul{display:inline-block;margin:0;padding:0;list-style:none;}article.project #toc nav>*{margin-left:1em;display:block;}article.definition{margin:1em 0 0 0;}article.definition >header h1,article.definition >header h2,article.definition >header h3,article.definition >header h4,article.definition >header h5,article.definition >header h6{text-indent:0;display:inline-block;}article.definition >header ul{display:inline-block;list-style:none;margin:0;padding:0;}article.definition >header ul li{display:inline-block;padding:0 0.2em 0 0;}article.definition >header .visibility{display:none;}article.definition >header .visibility,article.definition >header .type{text-transform:lowercase;}article.definition >header .source-link{visibility:hidden;float:right;}article.definition >header .source-link:after{visibility:visible;content:"[SRC]";}article.definition .docstring{margin:0 0 0 1em;}article.definition .docstring pre{font-size:0.8em;white-space:pre-wrap;}.definition.package >header ul.nicknames{display:inline-block;list-style:none;margin:0;padding:0 0 0 1em;}.definition.package >header ul.nicknames li{display:inline;}.definition.package >header ul.nicknames:before{content:"(";}.definition.package >header ul.nicknames:after{content:")";}.definition.package ul.definitions{margin:0;list-style:none;padding:0 0 0 0.5em;}.definition.callable >header .name:before,.definition.type >header .name:before{content:"(";font-weight:normal;}.definition.callable >header .arguments:after,.definition.type >header .arguments:after{content:")";}.definition.callable >header .arguments .arguments:before,.definition.type >header .arguments .arguments:before{content:"(";}.definition.callable >header .arguments .argument,.definition.type >header .arguments .argument{padding:0;}.definition.callable >header .arguments .argument.lambda-list-keyword,.definition.type >header .arguments .argument.lambda-list-keyword{color:#991155;}.definition li>mark{background:none;border-left:0.3em solid #0088EE;padding-left:0.3em;display:block;}@media (min-width: 1300px){html body{padding-left:16em;}article.project #toc{margin:0;position:fixed;left:0;top:0;bottom:0;width:15em;overflow-y:auto;background:#F0F0F0;border-right:1px solid #A0A0A0;}}</style> </head> <body> <article class="project"> <header>   <h1>documentation utils</h1>   <span class="version">1.2.0</span>    <p class="description">A few simple tools to help you with documenting your library.</p>   </header> <section id="toc"> <h2>Table of Contents</h2> <nav> <a href="#project">Top</a>  <a href="#documentation">Documentation</a> <nav> <a href="#about_documentation-utils">About documentation-utils</a>  <a href="#how_to">How To</a>  <a href="#custom_documentation_syntax">Custom Documentation Syntax</a>  <a href="#multiple_language_support">Multiple Language Support</a> </nav>  <a href="#system">System</a>  <a href="#system">Packages</a> <nav> <a href="#PACKAGE%20DOCUMENTATION-UTILS">DOCUMENTATION-UTILS</a> </nav>  </nav> </section>  <section id="documentation"><h2 id="about_documentation-utils">About documentation-utils</h2> <p>This is a small library to help you with managing the docstrings for your library.</p> <h2 id="how_to">How To</h2> <p>The central element is the <code><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">define-docs</a></code> macro. It takes a body of expressions to define the documentation. In the simplest form, this looks like so:</p> <pre><code><a href="http://l1sp.org/cl/documentation" class="xref">(</a><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">docs:define-docs</a>
+  (my-function &quot;Some documentation&quot;))
+</code></pre> <p>If you need a different type of documentation, or want to be explicit, prepend its type to the expression.</p> <pre><code><a href="http://l1sp.org/cl/documentation" class="xref">(</a><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">docs:define-docs</a>
+  (function my-function &quot;Some documentation&quot;)
+  (variable *my-variable* &quot;Something else&quot;))
+</code></pre> <p>In order to make things look more homely, aliases exist that can be used instead:</p> <pre><code><a href="http://l1sp.org/cl/documentation" class="xref">(</a><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">docs:define-docs</a>
+  (defun my-function
+    &quot;Some documentation&quot;)
+  (defvar *my-variable*
+    &quot;Something else&quot;))
+</code></pre> <p>Aliases exist for most of the <code>def*</code> expressions. Some expressions can take multiple arguments for the specifier, but the last in the expression is always the docstring:</p> <pre><code><a href="http://l1sp.org/cl/documentation" class="xref">(</a><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">docs:define-docs</a>
+  (defmethod foo :append ((num integer) other)
+    &quot;stuff&quot;))
+</code></pre> <p>You can also extend this system for your own documentation translators. If you need more complex behaviour than the default of <code>(documentation specifier type)</code>, see <code><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCUMENTATION-TRANSLATOR" class="xref">define-documentation-translator</a></code>. If you are defining a new documentation type, you should also add a <code><a href="#FUNCTION%20DOCUMENTATION-UTILS%3ADOCUMENTATION-TEST" class="xref">documentation-test</a></code> to ensure that <code><a href="#FUNCTION%20DOCUMENTATION-UTILS%3ACHECK" class="xref">check</a></code> can verify that you actually did set a documentation.</p> <h2 id="custom_documentation_syntax">Custom Documentation Syntax</h2> <p>In case you would like to use a richer markup than plaintext within your documentation, you can use the <code><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3AFORMATTER" class="xref">formatter</a></code> facility. Formatters take the last expression in a documentation definition expression and translate it to a docstring. This means that, with the right formatter, you can use a format other than plain docstrings, or even hook this into another documentation processing system in order to emit richer text while staying compatible to the standard <code><a href="http://l1sp.org/cl/documentation" class="xref">cl:documentation</a></code> facility.</p> <p>In order to switch the formatter, you can use the <code><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">define-docs</a></code> options like so:</p> <pre><code>(<a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">docs:define-docs</a>
+  :formatter my-formatter
+  (function my-function
+    (:arguments (a &quot;Something about this&quot;
+                 b &quot;Something about that&quot;)
+     :return-value &quot;Nothing useful&quot;
+     :summary &quot;This function does something, though I don't know what.&quot;)))
+</code></pre> <p>Aside from the <code>:formatter</code> option, you can pass an arbitrary number of other options as well, which will be used as initargs for the formatter instance. Note that this is all done at macroexpansion-time, and the initarg values are thus used as literals.</p> <p>The formatter presented above is just an example and is not provided by documentation-utils. Since I can't anticipate people's overall preferences in documentation style, it is up to you to write something more complicated to extend documentation-utils capabilities. Doing so should just be a matter of subclassing <code><a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3AFORMATTER" class="xref">formatter</a></code> and adding a method to <code><a href="#GENERIC-FUNCTION%20DOCUMENTATION-UTILS%3AFORMAT-DOCUMENTATION" class="xref">format-documentation</a></code>, though. As an example, the above could be done as follows:</p> <pre><code>(<a href="http://l1sp.org/cl/defclass" class="xref">defclass</a> my-formatter (formatter) ())
+
+(<a href="http://l1sp.org/cl/defmethod" class="xref">defmethod</a> <a href="#GENERIC-FUNCTION%20DOCUMENTATION-UTILS%3AFORMAT-DOCUMENTATION" class="xref">format-documentation</a> ((formatter my-formatter) type var docs)
+  (<a href="http://l1sp.org/cl/format" class="xref">format</a> NIL &quot;~a~@[
+
+Arguments:~{
+  ~a: ~a~}~]~@[
+
+Return value:
+  ~a~]&quot;
+          (<a href="http://l1sp.org/cl/getf" class="xref">getf</a> docs :summary)
+          (<a href="http://l1sp.org/cl/getf" class="xref">getf</a> docs :arguments)
+          (<a href="http://l1sp.org/cl/getf" class="xref">getf</a> docs :return-value)))
+</code></pre> <p>I'm sure you can imagine your own way of doing things.</p> <h2 id="multiple_language_support">Multiple Language Support</h2> <p>If you would like to provide documentation for your system in multiple languages, you can use the <code>multilang-documentation-utils</code> system, which relies on <a href="https://shinmera.github.io/multilang-documentation">multilang-documentation</a>. You can then use a plist of languages and docstrings as the docstring in a definition.</p> <p>Note that this uses the formatter mechanism to do its work. If you want to use a custom formatter in addition, you'll need to change it to output the appropriate docstrings to <code>multilang-documentation:documentation</code>.</p> <pre><code>(<a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">docs:define-docs</a>
+  :formatter docs:multilang-formatter
+  (function foo
+    (:en &quot;Does some fooey&quot;
+     :de &quot;Macht einen Quatsch&quot;
+     :ja &quot;出鱈目をします。&quot;)))
+</code></pre> </section>    <section id="system"> <h2>System Information</h2>  <div class="row"> <label for="version">Version:</label> <a id="version">1.2.0</a> </div>   <div class="row"> <label for="dependencies">Dependencies:</label> <ul id="dependencies"><li><a class="external" href="https://shinmera.github.io/trivial-indent/">trivial-indent</a></li></ul> </div>   <div class="row" id="author"> <label for="author">Author:</label> <a href="mailto:shinmera@tymoon.eu">Yukari Hafner</a> </div>   <div class="row"> <label for="license">License:</label> <a id="license" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/LICENSE">zlib</a> </div>   <div class="row"> <label for="homepage">Homepage:</label> <a id="homepage" href="https://Shinmera.github.io/documentation-utils/">https://Shinmera.github.io/documentation-utils/</a> </div>   <div class="row"> <label for="bug-tracker">Bug Tracker:</label> <a id="bug-tracker" href="https://github.com/Shinmera/documentation-utils/issues">https://github.com/Shinmera/documentation-utils/issues</a> </div>   <div class="row"> <label for="sources">Sources:</label> <a id="sources" href="https://github.com/Shinmera/documentation-utils.git">https://github.com/Shinmera/documentation-utils.git</a> </div>  </section>    <section id="index"> <h2>Definition Index</h2> <ul> <li> <article class="definition package" id="PACKAGE DOCUMENTATION-UTILS"> <header> <h3> <a href="#PACKAGE%20DOCUMENTATION-UTILS">DOCUMENTATION-UTILS</a> </h3> <ul class="nicknames"> <li>DOCS</li>  <li>ORG.SHIRAKUMO.DOCUMENTATION-UTILS</li> </ul>  </header> <div class="docstring"><i>No documentation provided.</i></div> <ul class="definitions"> <li> <article class="definition special-variable" id="VARIABLE DOCUMENTATION-UTILS:*DEFAULT-FORMATTER*"> <header> <span class="visibility">EXTERNAL</span> <span class="type">SPECIAL-VARIABLE</span> <h4 class="name"> <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADEFAULT-FORMATTER%2A">*DEFAULT-FORMATTER*</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments"></ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L87">Source</a>  </header> <div class="docstring"><pre>Variable for the default formatter to use.
+
+This should be either a DOCUMENTATION-FORMATTER instance, or a symbol
+naming the class of one.
+
+By default this value is an instance of PLAIN-FORMATTER.
+
+See <a href="#CLASS%20DOCUMENTATION-UTILS%3ADOCUMENTATION-FORMATTER" class="xref">DOCUMENTATION-FORMATTER</a>
+See <a href="#CLASS%20DOCUMENTATION-UTILS%3APLAIN-FORMATTER" class="xref">PLAIN-FORMATTER</a>
+See <a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS" class="xref">DEFINE-DOCS</a></pre></div> </article> </li>  <li> <article class="definition special-variable" id="VARIABLE DOCUMENTATION-UTILS:*DOCUMENTATION-TESTS*"> <header> <span class="visibility">EXTERNAL</span> <span class="type">SPECIAL-VARIABLE</span> <h4 class="name"> <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TESTS%2A">*DOCUMENTATION-TESTS*</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments"></ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L3">Source</a>  </header> <div class="docstring"><pre>Holds an alist of documentation types to test functions.
+
+The function should take one argument, the specifier, and
+return non-NIL if the symbol is bound for the given type.</pre></div> </article> </li>  <li> <article class="definition special-variable" id="VARIABLE DOCUMENTATION-UTILS:*DOCUMENTATION-TRANSLATORS*"> <header> <span class="visibility">EXTERNAL</span> <span class="type">SPECIAL-VARIABLE</span> <h4 class="name"> <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TRANSLATORS%2A">*DOCUMENTATION-TRANSLATORS*</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments"></ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L21">Source</a>  </header> <div class="docstring"><pre>Holds an alist of documentation types to translator functions.
+
+The function should take one argument, the specifier expression, and
+return a documentation form suitable to access the documentation
+for the given type.</pre></div> </article> </li>  <li> <article class="definition class" id="CLASS DOCUMENTATION-UTILS:DOCUMENTATION-FORMATTER"> <header> <span class="visibility">EXTERNAL</span> <span class="type">CLASS</span> <h4 class="name"> <a href="#CLASS%20DOCUMENTATION-UTILS%3ADOCUMENTATION-FORMATTER">DOCUMENTATION-FORMATTER</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments"></ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L61">Source</a>  </header> <div class="docstring"><pre>Base class for all documentation formatters.
+
+A documentation formatter is responsible for translating user-defined
+documentation expressions into docstrings usable by the underlying
+documentation storage. This can also be used to hook it into other systems
+that access documentation and may enrich it with further styling or
+information.
+
+The only relevant function for this class is FORMAT-DOCUMENTATION, which
+is used to perform the translation.
+
+See <a href="#GENERIC-FUNCTION%20DOCUMENTATION-UTILS%3AFORMAT-DOCUMENTATION" class="xref">FORMAT-DOCUMENTATION</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION DOCUMENTATION-UTILS:CHECK"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20DOCUMENTATION-UTILS%3ACHECK">CHECK</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">PACKAGE</li>    <li class="argument">INTERNAL</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L53">Source</a>  </header> <div class="docstring"><pre>Checks whether all symbols have documentation for all known types.
+
+If documentation is not set for a given symbol and type combination, a
+warning is signalled.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TESTS%2A" class="xref">*DOCUMENTATION-TESTS*</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION DOCUMENTATION-UTILS:DOCUMENTATION-TEST"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20DOCUMENTATION-UTILS%3ADOCUMENTATION-TEST">DOCUMENTATION-TEST</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TYPE</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L5">Source</a>  </header> <div class="docstring"><pre>Access the documentation test function for the given type.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TESTS%2A" class="xref">*DOCUMENTATION-TESTS*</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION DOCUMENTATION-UTILS:(SETF DOCUMENTATION-TEST)"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20DOCUMENTATION-UTILS%3A%28SETF%20DOCUMENTATION-TEST%29">(SETF DOCUMENTATION-TEST)</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TEST</li>    <li class="argument">TYPE</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L8">Source</a>  </header> <div class="docstring"><i>No documentation provided.</i></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION DOCUMENTATION-UTILS:DOCUMENTATION-TRANSLATOR"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20DOCUMENTATION-UTILS%3ADOCUMENTATION-TRANSLATOR">DOCUMENTATION-TRANSLATOR</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TYPE</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L23">Source</a>  </header> <div class="docstring"><pre>Access the documentation translator function for the given type.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TRANSLATORS%2A" class="xref">*DOCUMENTATION-TRANSLATORS*</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION DOCUMENTATION-UTILS:(SETF DOCUMENTATION-TRANSLATOR)"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20DOCUMENTATION-UTILS%3A%28SETF%20DOCUMENTATION-TRANSLATOR%29">(SETF DOCUMENTATION-TRANSLATOR)</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TRANSLATOR</li>    <li class="argument">TYPE</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L28">Source</a>  </header> <div class="docstring"><i>No documentation provided.</i></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION DOCUMENTATION-UTILS:REMOVE-DOCUMENTATION-TEST"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20DOCUMENTATION-UTILS%3AREMOVE-DOCUMENTATION-TEST">REMOVE-DOCUMENTATION-TEST</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TYPE</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L13">Source</a>  </header> <div class="docstring"><pre>Remove the documentation test function for the given type.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TESTS%2A" class="xref">*DOCUMENTATION-TESTS*</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION DOCUMENTATION-UTILS:REMOVE-DOCUMENTATION-TRANSLATOR"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20DOCUMENTATION-UTILS%3AREMOVE-DOCUMENTATION-TRANSLATOR">REMOVE-DOCUMENTATION-TRANSLATOR</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TYPE</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L33">Source</a>  </header> <div class="docstring"><pre>Remove the documentation translator function for the given type.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TRANSLATORS%2A" class="xref">*DOCUMENTATION-TRANSLATORS*</a></pre></div> </article> </li>  <li> <article class="definition generic-function callable" id="GENERIC-FUNCTION DOCUMENTATION-UTILS:FORMAT-DOCUMENTATION"> <header> <span class="visibility">EXTERNAL</span> <span class="type">GENERIC-FUNCTION</span> <h4 class="name"> <a href="#GENERIC-FUNCTION%20DOCUMENTATION-UTILS%3AFORMAT-DOCUMENTATION">FORMAT-DOCUMENTATION</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">FORMATTER</li>    <li class="argument">TYPE</li>    <li class="argument">VAR</li>    <li class="argument">DOCUMENTATION</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L64">Source</a>  </header> <div class="docstring"><pre>Processes the documentation string according to the formatter's rules.
+
+Passed along are the three values that make up a documentation definition:
+
+- The fundamental type of the definition as used in DOCUMENTATION.
+- An additional set of variants used to distinguish more complicated
+  definitions. For instance, for methods this would be the method qualifiers.
+- The expression used for the actual documentation. This is always the last
+  expression within a documentation definition expression.
+
+The function should either error on an invalid documentation expression, or
+return a string to be passed to the underlying documentation storage.
+
+You may use this function to store the documentation expression elsewhere
+so that it may be processed into different formats using additional markup
+than is appropriate for plain strings.
+
+See <a href="#CLASS%20DOCUMENTATION-UTILS%3ADOCUMENTATION-FORMATTER" class="xref">DOCUMENTATION-FORMATTER</a></pre></div> </article> </li>  <li> <article class="definition macro callable" id="MACRO-FUNCTION DOCUMENTATION-UTILS:DEFINE-DOCS"> <header> <span class="visibility">EXTERNAL</span> <span class="type">MACRO</span> <h4 class="name"> <a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCS">DEFINE-DOCS</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument lambda-list-keyword">&amp;BODY</li>    <li class="argument">EXPRESSIONS</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L89">Source</a>  </header> <div class="docstring"><pre>Allows you to comfortably and easily set the documentation for your library.
+
+Each expression in the body can either take a two or many argument structure.
+In the two argument structure, the type is implicitly assumed to be 
+FUNCTION. The first argument is then the specifier, and the second the
+documentation. In the many argument structure the first argument is the
+type, the last is the documentation, and everything in between the specifier.
+
+The expansion of the documentation accessor --and thus the structure of
+the specifier-- is dependant on the applicable documentation translator.
+By default, the expansion is simply (CL:DOCUMENTATION SPECIFIER TYPE).
+
+In addition to the actual documentation expressions, the docs definition may
+begin with a set of keyword-value pairs. These options supply initargs for
+the documentation formatter. By default, the formatter is *DEFAULT-FORMATTER*,
+but a formatter class of your own can be selected with the :FORMATTER option.
+This formatter will then translate the documentation expression at compile time
+to reduce it into a docstring as expected by the underlying documentation
+storage. Note that the initarg values are used at macroexpansion time, and so
+are used as literals. If the chosen formatter is already a formatter instance,
+the initargs are used with REINITIALIZE-INSTANCE. Otherwise if the formatter
+is a symbol, MAKE-INSTANCE Is used.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TRANSLATORS%2A" class="xref">*DOCUMENTATION-TRANSLATORS*</a>
+See <a href="#GENERIC-FUNCTION%20DOCUMENTATION-UTILS%3AFORMAT-DOCUMENTATION" class="xref">FORMAT-DOCUMENTATION</a>
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADEFAULT-FORMATTER%2A" class="xref">*DEFAULT-FORMATTER*</a></pre></div> </article> </li>  <li> <article class="definition macro callable" id="MACRO-FUNCTION DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-ALIAS"> <header> <span class="visibility">EXTERNAL</span> <span class="type">MACRO</span> <h4 class="name"> <a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCUMENTATION-ALIAS">DEFINE-DOCUMENTATION-ALIAS</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">ALIAS</li>    <li class="argument">TYPE</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L41">Source</a>  </header> <div class="docstring"><pre>Shorthand to define an alias to a translator.
+
+This simply sets a delegating function that refers to the given type.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TRANSLATORS%2A" class="xref">*DOCUMENTATION-TRANSLATORS*</a></pre></div> </article> </li>  <li> <article class="definition macro callable" id="MACRO-FUNCTION DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TEST"> <header> <span class="visibility">EXTERNAL</span> <span class="type">MACRO</span> <h4 class="name"> <a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCUMENTATION-TEST">DEFINE-DOCUMENTATION-TEST</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TYPE</li>    <li class="argument">ARGS</li>    <li class="argument lambda-list-keyword">&amp;BODY</li>    <li class="argument">BODY</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L17">Source</a>  </header> <div class="docstring"><pre>Shorthand to define a documentation test function.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TESTS%2A" class="xref">*DOCUMENTATION-TESTS*</a></pre></div> </article> </li>  <li> <article class="definition macro callable" id="MACRO-FUNCTION DOCUMENTATION-UTILS:DEFINE-DOCUMENTATION-TRANSLATOR"> <header> <span class="visibility">EXTERNAL</span> <span class="type">MACRO</span> <h4 class="name"> <a href="#MACRO-FUNCTION%20DOCUMENTATION-UTILS%3ADEFINE-DOCUMENTATION-TRANSLATOR">DEFINE-DOCUMENTATION-TRANSLATOR</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TYPE</li>    <li class="argument">ARGS</li>    <li class="argument lambda-list-keyword">&amp;BODY</li>    <li class="argument">BODY</li>    <li class="argument lambda-list-keyword">&amp;REST</li>  </ul>  <a class="source-link" href="https://github.com/Shinmera/documentation-utils/blob/0196f6ce6828a745121374c238972491074f5eb1/toolkit.lisp#L37">Source</a>  </header> <div class="docstring"><pre>Shorthand to define a documentation translator function.
+
+See <a href="#VARIABLE%20DOCUMENTATION-UTILS%3A%2ADOCUMENTATION-TRANSLATORS%2A" class="xref">*DOCUMENTATION-TRANSLATORS*</a></pre></div> </article> </li> </ul> </article> </li> </ul> </section>  </article> <script>window.addEventListener("DOMContentLoaded", function(){
+    var unmarkElement = function(el){
+        if(el.tagName === "mark" || el.tagName === "MARK"){
+            [].forEach.call(el.childNodes, function(child){
+                el.parentNode.insertBefore(child, el);
+            });
+            el.parentNode.removeChild(el);
+        }else if(el.parentNode.tagName === "mark"){
+            return unmarkElement(el.parentNode);
+        }
+        return null;
+    }
+
+    var unmarkAll = function(root){
+        root = root || document;
+        [].forEach.call(root.querySelectorAll("mark"), unmarkElement);
+    }
+    
+    var markElement = function(el){
+        if(el.parentNode.tagName === "mark" || el.parentNode.tagName === "MARK"){
+            return el.parentNode;
+        } else {
+            unmarkAll();
+            var marked = document.createElement("mark");
+            el.parentNode.insertBefore(marked, el);
+            marked.appendChild(el);
+            return marked;
+        }
+    }
+
+    var markFragmented = function(){
+        if(window.location.hash){
+            var el = document.getElementById(decodeURIComponent(window.location.hash.substr(1)));
+            if(el) markElement(el);
+        }
+    }
+
+    var registerXrefLink = function(link){
+        var el = document.getElementById(decodeURIComponent(link.getAttribute("href").substr(1)));
+        if(el){
+            link.addEventListener("click", function(){
+                markElement(el);
+            });
+        }
+    }
+
+    var registerXrefLinks = function(root){
+        root = root || document;
+        [].forEach.call(root.querySelectorAll("a.xref"), registerXrefLink);
+    }
+
+    markFragmented();
+    registerXrefLinks();
+}); </script> </body> </html> 
