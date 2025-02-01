@@ -53,7 +53,6 @@
 (defun check (&key (package *package*) (internal T))
   (loop for (type . test) in (sort (copy-list *documentation-tests*)
                                    #'string< :key #'car)
-        for reader = (documentation-translator type)
         do (dolist (symb (list-symbols package :internal internal))
              (when (and (funcall test symb) (not (handler-bind ((warning #'muffle-warning)) (documentation symb type))))
                (warn "No documentation for ~(~a~) ~a." type symb)))))
@@ -67,6 +66,7 @@
   ())
 
 (defmethod format-documentation ((formatter plain-formatter) type var documentation)
+  (declare (ignorable type var))
   (check-type documentation string)
   documentation)
 
